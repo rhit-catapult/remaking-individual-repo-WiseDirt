@@ -22,7 +22,6 @@ while True:
 
         # Additional interactions with events
 
-    # TODO 01: Make the background white by uncommenting the line below
     screen.fill(pygame.Color("Gray"))
 
     pygame.draw.circle(screen, pygame.Color("blue"), (50,50), 25)
