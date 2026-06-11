@@ -33,7 +33,12 @@ def main():
     circle_radius = 50
     circle_border_width = 3
     message_text = 'click'
-  
+    
+    miss_counter = 0
+    miss_text = 'You missed', miss_counter
+    hit_counter = 0
+    hit_text = 'You hit', hit_counter
+
 
     while True:
 
@@ -47,10 +52,12 @@ def main():
                     print("start the music")
                     pygame.mixer.music.play(-1)
                     message_text = 'bullseye!'
+                    hit_counter += 1
                 else:
                     print("stop the music")
                     pygame.mixer.music.stop()
                     message_text = 'You missed'
+                    miss_counter += 1
 
 
             # done 2: For a MOUSEBUTTONDOWN event get the click position.
@@ -71,8 +78,11 @@ def main():
         screen.blit(instructions_image, (25, 25))
         # done 7: Draw (blit) the message to the user that says 'Bullseye!' or 'You missed!'
         message_image = font.render(message_text, True, (0, 255, 255))
+        hit_image = font.render(hit_text, True, (0, 255, 255))
+        miss_image = font.render(miss_text, True, (255, 0, 0))
         screen.blit(message_image, (pygame.display.get_window_size()[0] // 2 - message_image.get_width() // 2, 300))
-
+        screen.blit(hit_image, (25, 350))
+        screen.blit(miss_image, (25, 375))
         pygame.display.update()
 
 
