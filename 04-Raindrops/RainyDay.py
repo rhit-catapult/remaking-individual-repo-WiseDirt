@@ -58,16 +58,24 @@ class Hero:
     def draw(self):
         """ Draws this sprite onto the screen. """
         # done 17: Draw (blit) this Hero, at this Hero's position, WITHOUT an umbrella:
-        # TODO 21: Instead draw (blit) this Hero, at this Hero's position, as follows:
+        # done 21: Instead draw (blit) this Hero, at this Hero's position, as follows:
         #     If the current time is greater than this Hero's last_hit_time + 1,
         #       draw this Hero WITHOUT an umbrella,
         #       otherwise draw this Hero WITH an umbrella.
-        self.screen.blit(self.image_no_umbrella, (self.x, self.y))
+
+        if time.time() > self.last_hit_time + 1: 
+            self.screen.blit(self.image_no_umbrella, (self.x, self.y))
+        else:
+            self.screen.blit(self.image_umbrella, (self.x, self.y))
+
+        
 
     def hit_by(self, raindrop):
         """ Returns true if the given raindrop is hitting this Hero, otherwise false. """
-        # TODO 19: Return True if this Hero is currently colliding with the given Raindrop.
-        pass
+        # done 19: Return True if this Hero is currently colliding with the given Raindrop.
+        my_hit_box = pygame.Rect(self.x, self.y, 
+                                 self.image_no_umbrella.get_width(), self.image_no_umbrella.get_width())
+        return my_hit_box.collidepoint(raindrop.x, raindrop.y + 5)
 
 
 class Cloud:
@@ -110,7 +118,7 @@ def main():
     test_drop = Raindrop(screen, 320,10)
     # done 15: Make a Hero, named mike, with appropriate images, starting at position x=200 y=400.
     # done 15: Make a Hero, named alyssa, with appropriate images, starting at position x=700 y=400
-    mike = Hero(screen, 200, 400, "Mike_umbrella.png", "Mike.png")
+    mike = Hero(screen, 210, 400, "Mike_umbrella.png", "Mike.png")
     alyssa = Hero(screen, 700, 400, "Alyssa_umbrella.png", "Alyssa.png")
     # TODO 23: Make a Cloud, named cloud, with appropriate images, starting at position x=300 y=50.
 
@@ -143,7 +151,16 @@ def main():
             test_drop.y = -10
         test_drop.draw()
 
-        # TODO 20: As a temporary test, check if test_drop is hitting Mike (or Alyssa), if so set their last_hit_time
+        # done 20: As a temporary test, check if test_drop is hitting Mike (or Alyssa), if so set their last_hit_time
+        if mike.hit_by(test_drop):
+            mike.last_hit_time = time.time()
+            test_drop.x = 720
+            test_drop.y = 0
+        if alyssa.hit_by(test_drop):
+            alyssa.last_hit_time = time.time() 
+            test_drop.x = 310
+            test_drop.y = 0
+
         # TODO 22: Remove the code that reset the y of the test_drop when off_screen()
         #          Instead reset the test_drop y to 10 when mike is hit, additionally set the x to 750
         #          Then add similar code to alyssa that sets her last_hit_time and moves the test_drop to 10 320
@@ -163,7 +180,7 @@ def main():
         mike.draw()
         alyssa.draw()
 
-        # TODO 6: Update the display and remove the pass statement below
+        # done 6: Update the display and remove the pass statement below
         pygame.display.update()
     pass
 
